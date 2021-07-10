@@ -1,14 +1,16 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "latihandb";
+// $servername = "localhost";
+// $username = "root";
+// $password = "root";
+// $dbname = "latihandb";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// $conn = new mysqli($servername, $username, $password, $dbname);
 
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+// if ($conn->connect_error) {
+//   die("Connection failed: " . $conn->connect_error);
+// }
+include('database.php');
+$db = new database();
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +29,7 @@ if ($conn->connect_error) {
   <!-- Nav Start -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/">Navbar</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -54,34 +56,29 @@ if ($conn->connect_error) {
   <div class="container mt-3">
     <h2>Tambah Produk</h2>
     <div class="container mt-4 px-5">
-      <form>
+      <form method="post" action="AddData.php">
         <div class="mb-3">
           <label for="ProductName" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="ProductName" required>
+          <input type="text" class="form-control" id="ProductName" name="productname" required>
         </div>
         <div class="mb-3">
           <label for="sku" class="form-label">SKU</label>
-          <input type="text" class="form-control" id="sku" required>
+          <input type="text" class="form-control" id="sku" name="sku" required>
         </div>
         <div class="mb-3">
           <label for="stock" class="form-label">Stock</label>
-          <input type="number" class="form-control" id="stock" required>
+          <input type="number" class="form-control" id="stock" name="stock" required>
         </div>
         <div class="mb-3">
           <label for="category" class="form-label">Category</label>
-          <select class="form-select" id="category" aria-label="Category" <?php
-                                                                          $cats = 'SELECT * FROM productcategory';
-                                                                          $cat = $conn->query($cats);
-                                                                          $catisnull = ($cat->num_rows <= 0) ? 'disabled' : '';
-                                                                          echo $catisnull; ?>>
+          <select class="form-select" id="category" aria-label="Category" name="category">
             <?php
-            if ($cat->num_rows > 0) {
-              while ($a = $cat->fetch_assoc()) {
-                ['CategoryId' => $id, 'CategoryName' => $categoryname] = $a;
-                echo '<option value="' . $id . '">' . $categoryname . '</option>';
+            if ($db->getAllCategory()->num_rows > 0) {
+              foreach($db->getAllCategory() as $row){
+                ?>
+                <option value="<?= $row['CategoryId']; ?>"><?= $row['CategoryName']; ?></option>
+             <?php
               }
-            } else {
-              echo '<option value="" selected>No Category Yet!</option>';
             }
             ?>
           </select>
@@ -93,19 +90,14 @@ if ($conn->connect_error) {
         </div>
         <div class="mb-3">
           <label for="supplier" class="form-label">Supplier</label>
-          <select class="form-select" id="supplier" aria-label="Supplier" <?php
-                                                                          $sups = 'SELECT * FROM supplierlist';
-                                                                          $sup = $conn->query($sups);
-                                                                          $supisnull = ($sup->num_rows <= 0) ? 'disabled' : '';
-                                                                          echo $supisnull; ?>>
-            <?php
-            if ($sup->num_rows > 0) {
-              while ($a = $sup->fetch_assoc()) {
-                ['SupplierId' => $id, 'CompanyName' => $companyname] = $a;
-                echo '<option value="' . $id . '">' . $companyname . '</option>';
+          <select class="form-select" id="supplier" aria-label="Supplier" name="supplier">
+          <?php
+            if ($db->getAllSupplier()->num_rows > 0) {
+              foreach($db->getAllSupplier() as $row){
+                ?>
+                <option value="<?= $row['SupplierId']; ?>"><?= $row['CompanyName']; ?></option>
+             <?php
               }
-            } else {
-              echo '<option value="" selected>No Associated Company!</option>';
             }
             ?>
           </select>
@@ -117,13 +109,13 @@ if ($conn->connect_error) {
         </div>
         <div class="mb-3">
           <label for="cost" class="form-label">Cost Price</label>
-          <input type="number" class="form-control" id="cost" required>
+          <input type="number" class="form-control" id="cost" name="cost" required>
         </div>
         <div class="mb-3">
           <label for="sale" class="form-label">Sale Price</label>
-          <input type="number" class="form-control" id="sale" required>
+          <input type="number" class="form-control" id="sale" name="sale" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" name="addproduct">Submit</button>
       </form>
     </div>
   </div>
@@ -136,7 +128,7 @@ if ($conn->connect_error) {
           <h5 class="modal-title">Add Category</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form method="POST" action="">
+        <form method="POST" action="AddData.php">
           <div class="modal-body">
             <div class="mb-3">
               <label for="addCategory" class="col-form-label">Category:</label>
@@ -161,7 +153,7 @@ if ($conn->connect_error) {
           <h5 class="modal-title">Add Supplier</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form method="post" action="/AddProduct.php">
+        <form method="post" action="AddData.php">
           <div class="modal-body">
             <div class="mb-3">
               <label for="compName" class="col-form-label">Company Name:</label>
@@ -198,27 +190,6 @@ if ($conn->connect_error) {
   </div>
   <!-- Supplier Modal End -->
 
-  <?php
-  if (isset($_POST['addcategory'])) {
-    $newcat = $_POST['newcat'];
-    $query = "INSERT INTO productcategory SET CategoryName='$newcat'";
-    $conn->query($query);
-    $query = NULL;
-    header('/AddProduct.php');
-  } elseif (isset($_POST['addsupplier'])) {
-    $newcomp = $_POST['newcomp'];
-    $newcont = $_POST['newcont'];
-    $newaddr = $_POST['newaddr'];
-    $newmail = $_POST['newmail'];
-    $newphone = $_POST['newphone'];
-    $newsite = $_POST['newsite'];
-    $query = "INSERT INTO supplierlist (CompanyName, ContactName, Address, Email, Phone, Website) 
-    VALUES ('$newcomp', '$newcont', '$newaddr', '$newmail', '$newphone', '$newsite')";
-    $conn->query($query);
-    $query = NULL;
-    header('/AddProduct.php');
-  }
-  ?>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

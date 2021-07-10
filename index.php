@@ -10,6 +10,7 @@ $db = new database();
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" >
   <link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <title>Do do do</title>
 </head>
@@ -17,7 +18,7 @@ $db = new database();
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="/">Navbar</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -45,20 +46,21 @@ $db = new database();
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Nama Produk</th>
+          <th scope="col">Product Name</th>
           <th scope="col">SKU</th>
-          <th scope="col">Jumlah Stock</th>
-          <th scope="col">Kategori</th>
+          <th scope="col">Stock Count</th>
+          <th scope="col">Category</th>
           <th scope="col">Supplier</th>
-          <th scope="col">Harga Modal</th>
-          <th scope="col">Harga Jual</th>
+          <th scope="col">Cost Price</th>
+          <th scope="col">Sale Price</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
         <?php
         $x = 0;
-        if ($db->getdata()->num_rows > 0) {
-          foreach($db->getdata() as $row){
+        if ($db->getallproduct()->num_rows > 0) {
+          foreach($db->getallproduct() as $row){
             ?>
       <tr>
         <th><?php echo $x+=1 ?></th>
@@ -69,6 +71,11 @@ $db = new database();
         <td><?php echo $row['CompanyName']; ?></td>
         <td><?php echo $row['CostPrice']; ?></td>
         <td><?php echo $row['SalePrice']; ?></td>
+        <td><div class="btn-group d-flex justify-content-center" role="group" aria-label="Basic mixed styles example">
+              <button type="button" class="btn btn-primary"><i class="bi-eye-fill"></i></button>
+              <button type="button" class="btn btn-warning"><i class="bi-pencil-square"></i></button>
+              <button type="button" class="btn btn-danger" id="delete-btn" onclick="modal()"><i class="bi-trash-fill"></i></button>
+            </div></td>
           </tr>
         <?php
           }
@@ -77,6 +84,39 @@ $db = new database();
       </tbody>
     </table>
   </div>
+
+  <!-- Delete Modal Start -->
+  <div class="modal fade" id="myModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="AddData.php">
+          <div class="modal-body">
+            <div class="mb-3">
+              <p>Are you sure want to delete <?='<script>document.write(data_id);</script>'?> ?</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger" name="deleteproduct">Delete!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Delete Modal End -->
+
+  <script>
+    function modal(){
+      var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+      });
+      myModal.show();
+    }
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
