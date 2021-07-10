@@ -1,16 +1,16 @@
 <?php
-class database
-{
-    var $host = 'localhost';
-    var $user = 'root';
-    var $pass = 'root';
-    var $dbnm = 'latihandb';
 
-    public $conn;
+class database{
 
-    function __construct()
-    {
-        $this->conn = mysqli_connect($this->host, $this->user, $this->pass, $this->dbnm);
+    protected $host = 'localhost';
+    protected $user = 'root';
+    protected $pass = 'root';
+    protected $dbnm = 'latihandb';
+
+    public $con;
+
+    function __construct(){
+        $this->con = new mysqli($this->host, $this->user, $this->pass, $this->dbnm);
     }
 
     function getdata(){
@@ -18,19 +18,9 @@ class database
         FROM productlist 
         INNER JOIN productcategory ON productlist.CategoryId = productcategory.CategoryId 
         INNER JOIN supplierlist ON productlist.SupplierId = supplierlist.SupplierId;";
+        $data = $this->con->query($sql);
 
-        // $data = mysqli_query("SELECT productlist.*, productcategory.CategoryName, supplierlist.CompanyName 
-        // FROM productlist 
-        // INNER JOIN productcategory ON productlist.CategoryId = productcategory.CategoryId 
-        // INNER JOIN supplierlist ON productlist.SupplierId = supplierlist.SupplierId;");
-
-        while($d = mysql_fetch_array($sql)){
-			$hasil[] = $d;
-		}
-
-        return $hasil;
+        return $data;
     }
-
-
 }
 ?>

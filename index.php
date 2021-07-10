@@ -1,9 +1,6 @@
 <?php
 include('database.php');
-$conn = new database();
-$hasil = $conn->getdata();
-var_dump($hasil);
-die;
+$db = new database();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,38 +56,23 @@ die;
       </thead>
       <tbody>
         <?php
-        $result = $conn->getdata();
         $x = 0;
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
-            [
-              'ProductName' => $productname,
-              'SKU' => $sku,
-              'Stock' => $stock,
-              'CategoryName' => $categoryname,
-              'CompanyName' => $companyname,
-              'CostPrice' => $cost,
-              'SalePrice' => $sale
-            ] = $row;
-
-            $x += 1;
-            echo '
+        if ($db->getdata()->num_rows > 0) {
+          foreach($db->getdata() as $row){
+            ?>
       <tr>
-        <th>' . $x . '</th>
-        <td>' . $productname . '</td>
-        <td>' . $sku . '</td>
-        <td>' . $stock . '</td>
-        <td>' . $categoryname . '</td>
-        <td>' . $companyname . '</td>
-        <td>' . $cost . '</td>
-        <td>' . $sale . '</td>
-      </tr>
-      ';
+        <th><?php echo $x+=1 ?></th>
+        <td><?php echo $row['ProductName']; ?></td>
+        <td><?php echo $row['SKU']; ?></td>
+        <td><?php echo $row['Stock']; ?></td>
+        <td><?php echo $row['CategoryName']; ?></td>
+        <td><?php echo $row['CompanyName']; ?></td>
+        <td><?php echo $row['CostPrice']; ?></td>
+        <td><?php echo $row['SalePrice']; ?></td>
+          </tr>
+        <?php
           }
-        } else {
-          echo '';
         }
-        $conn->close();
         ?>
       </tbody>
     </table>
