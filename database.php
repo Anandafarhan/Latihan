@@ -1,6 +1,7 @@
 <?php
 
-class database{
+class database
+{
 
     protected $host = 'localhost';
     protected $user = 'root';
@@ -9,11 +10,13 @@ class database{
 
     public $con;
 
-    function __construct(){
+    function __construct()
+    {
         $this->con = new mysqli($this->host, $this->user, $this->pass, $this->dbnm);
     }
-
-    function getallproduct(){
+    //##################################### GET FUNCTION #####################################//
+    function getallproduct()
+    {
         $sql = "SELECT productlist.*, productcategory.CategoryName, supplierlist.CompanyName 
         FROM productlist 
         INNER JOIN productcategory ON productlist.CategoryId = productcategory.CategoryId 
@@ -22,25 +25,28 @@ class database{
         return $this->con->query($sql);
     }
 
-    function getproduct($id){
+    function getproduct($id)
+    {
         $sql = "SELECT * FROM productlist WHERE SKU = $id;";
 
         return $this->con->query($sql);
     }
 
-    function getAllCategory(){
+    function getAllCategory()
+    {
         $sql = "SELECT * FROM productcategory;";
 
         return $this->con->query($sql);
     }
 
-    function getAllSupplier(){
+    function getAllSupplier()
+    {
         $sql = "SELECT * FROM supplierlist;";
-        
+
         return $this->con->query($sql);
         header('Location: AddProduct.php');
     }
-
+    //##################################### ADD FUNCTION #####################################//
     function addCategory($newCat)
     {
         $sql = "INSERT INTO productcategory (CategoryName) VALUE ('$newCat');";
@@ -66,5 +72,20 @@ class database{
         $this->con->query($sql);
         header('Location: /');
     }
+    //##################################### EDIT FUNCTION #####################################//
+    function editProduct($id, $cost, $sale)
+    {
+        $sql = "UPDATE productlist SET CostPrice = '$cost', SalePrice = '$sale' WHERE SKU = '$id'";
+
+        $this->con->query($sql);
+        header('Location: /');
+    }
+    //##################################### DELETE FUNCTION #####################################//
+    function deleteProduct($id)
+    {
+        $sql = "DELETE FROM productlist WHERE SKU = '$id'";
+
+        $this->con->query($sql);
+        header('Location: /');
+    }
 }
-?>

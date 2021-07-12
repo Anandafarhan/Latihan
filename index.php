@@ -10,7 +10,7 @@ $db = new database();
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" >
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <title>Do do do</title>
 </head>
@@ -60,23 +60,25 @@ $db = new database();
         <?php
         $x = 0;
         if ($db->getallproduct()->num_rows > 0) {
-          foreach($db->getallproduct() as $row){
-            ?>
-      <tr>
-        <th><?php echo $x+=1 ?></th>
-        <td><?php echo $row['ProductName']; ?></td>
-        <td><?php echo $row['SKU']; ?></td>
-        <td><?php echo $row['Stock']; ?></td>
-        <td><?php echo $row['CategoryName']; ?></td>
-        <td><?php echo $row['CompanyName']; ?></td>
-        <td><?php echo $row['CostPrice']; ?></td>
-        <td><?php echo $row['SalePrice']; ?></td>
-        <td><div class="btn-group d-flex justify-content-center" role="group" aria-label="Basic mixed styles example">
-              <button type="button" class="btn btn-primary"><i class="bi-eye-fill"></i></button>
-              <button type="button" class="btn btn-warning"><i class="bi-pencil-square"></i></button>
-              <button type="button" class="btn btn-danger" id="delete-btn" onclick="modal()"><i class="bi-trash-fill"></i></button>
-            </div></td>
-          </tr>
+          foreach ($db->getallproduct() as $row) {
+        ?>
+            <tr>
+              <th><?php echo $x += 1 ?></th>
+              <td><?php echo $row['ProductName']; ?></td>
+              <td><?php echo $row['SKU']; ?></td>
+              <td><?php echo $row['Stock']; ?></td>
+              <td><?php echo $row['CategoryName']; ?></td>
+              <td><?php echo $row['CompanyName']; ?></td>
+              <td><?php echo $row['CostPrice']; ?></td>
+              <td><?php echo $row['SalePrice']; ?></td>
+              <td>
+                <div class="btn-group me-2 d-flex justify-content-center" role="group">
+                  <button type="button" class="btn btn-sm btn-primary"><i class="bi-eye-fill"></i></button>
+                  <button type="button" class="btn btn-sm btn-warning edit" data-id="<?= $row['SKU']; ?>" data-product="<?= $row['ProductName']; ?>" data-cost="<?= $row['CostPrice']; ?>" data-sale="<?= $row['SalePrice']; ?>"><i class="bi-pencil-square"></i></button>
+                  <button type="button" class="btn btn-sm btn-danger del" data-id="<?= $row['SKU']; ?>" data-product="<?= $row['ProductName']; ?>"><i class="bi-trash-fill"></i></button>
+                </div>
+              </td>
+            </tr>
         <?php
           }
         }
@@ -85,37 +87,7 @@ $db = new database();
     </table>
   </div>
 
-  <!-- Delete Modal Start -->
-  <div class="modal fade" id="myModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Delete Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form method="POST" action="AddData.php">
-          <div class="modal-body">
-            <div class="mb-3">
-              <p>Are you sure want to delete <?='<script>document.write(data_id);</script>'?> ?</p>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-danger" name="deleteproduct">Delete!</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!-- Delete Modal End -->
-
-  <script>
-    function modal(){
-      var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-      });
-      myModal.show();
-    }
-  </script>
+  <?php include('modal.php'); ?>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -124,6 +96,26 @@ $db = new database();
   <script>
     $(document).ready(function() {
       $('#dataTable').DataTable();
+    });
+
+    $('.edit').on('click', function(e) {
+      var product = $(this).data('product');
+      var cost = $(this).data('cost');
+      var sale = $(this).data('sale');
+      var id = $(this).data('id');
+      $('#modalEdit').modal('show');
+      $('#title').html("Edit " + product);
+      $('#cost').val(cost);
+      $('#sale').val(sale);
+      $('#edid').attr('value', id);
+    });
+
+    $('.del').on('click', function(e) {
+      var product = $(this).data('product');
+      var id = $(this).data('id');
+      $('#modalDelete').modal('show');
+      $('#product').html(product);
+      $('#delid').attr('value', id);
     });
   </script>
 </body>

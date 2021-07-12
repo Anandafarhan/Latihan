@@ -56,7 +56,7 @@ $db = new database();
   <div class="container mt-3">
     <h2>Tambah Produk</h2>
     <div class="container mt-4 px-5">
-      <form method="post" action="AddData.php">
+      <form method="post" action="function.php?func=addproduct">
         <div class="mb-3">
           <label for="ProductName" class="form-label">Product Name</label>
           <input type="text" class="form-control" id="ProductName" name="productname" required>
@@ -74,10 +74,10 @@ $db = new database();
           <select class="form-select" id="category" aria-label="Category" name="category">
             <?php
             if ($db->getAllCategory()->num_rows > 0) {
-              foreach($db->getAllCategory() as $row){
-                ?>
+              foreach ($db->getAllCategory() as $row) {
+            ?>
                 <option value="<?= $row['CategoryId']; ?>"><?= $row['CategoryName']; ?></option>
-             <?php
+            <?php
               }
             }
             ?>
@@ -91,12 +91,12 @@ $db = new database();
         <div class="mb-3">
           <label for="supplier" class="form-label">Supplier</label>
           <select class="form-select" id="supplier" aria-label="Supplier" name="supplier">
-          <?php
+            <?php
             if ($db->getAllSupplier()->num_rows > 0) {
-              foreach($db->getAllSupplier() as $row){
-                ?>
+              foreach ($db->getAllSupplier() as $row) {
+            ?>
                 <option value="<?= $row['SupplierId']; ?>"><?= $row['CompanyName']; ?></option>
-             <?php
+            <?php
               }
             }
             ?>
@@ -128,7 +128,7 @@ $db = new database();
           <h5 class="modal-title">Add Category</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form method="POST" action="AddData.php">
+        <form method="POST" action="function.php?func=addcategory">
           <div class="modal-body">
             <div class="mb-3">
               <label for="addCategory" class="col-form-label">Category:</label>
@@ -153,7 +153,7 @@ $db = new database();
           <h5 class="modal-title">Add Supplier</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form method="post" action="AddData.php">
+        <form method="post" action="function.php?func=addsupplier">
           <div class="modal-body">
             <div class="mb-3">
               <label for="compName" class="col-form-label">Company Name:</label>
