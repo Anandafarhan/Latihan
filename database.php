@@ -5,7 +5,7 @@ class database
 
     protected $host = 'localhost';
     protected $user = 'root';
-    protected $pass = 'root';
+    protected $pass = '';
     protected $dbnm = 'latihandb';
 
     public $con;

@@ -28,7 +28,7 @@ $db = new database();
             <a class="nav-link active" aria-current="page" href="/">Daftar Produk</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/AddProduct.php">Tambah Produk</a>
+            <a class="nav-link active" aria-current="page" href="AddProduct.php">Tambah Produk</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">
