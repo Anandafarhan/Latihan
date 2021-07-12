@@ -144,3 +144,4 @@ include('template-Header.php');
   </div>
 </div>
 <!-- Supplier Modal End -->
+<?php include('template-Footer.php'); ?>
