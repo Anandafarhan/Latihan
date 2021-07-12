@@ -69,19 +69,19 @@ include('template-Header.php');
         <div class="modal-body">
           <div class="mb-3">
             <label for="ProductName" class="form-label">Product Name</label>
-            <input type="text" class="form-control" id="ProductName" name="productname" required>
+            <input type="text" class="form-control" name="productname" required>
           </div>
           <div class="mb-3">
             <label for="sku" class="form-label">SKU</label>
-            <input type="text" class="form-control" id="sku" name="sku" required>
+            <input type="text" class="form-control" name="sku" required>
           </div>
           <div class="mb-3">
             <label for="stock" class="form-label">Stock</label>
-            <input type="number" class="form-control" id="stock" name="stock" required>
+            <input type="number" class="form-control" name="stock" required>
           </div>
           <div class="mb-3">
             <label for="category" class="form-label">Category</label>
-            <select class="form-select" id="category" aria-label="Category" name="category">
+            <select class="form-select" aria-label="Category" name="category">
               <?php
               if ($category->getAllCategory()->num_rows > 0) {
                 foreach ($category->getAllCategory() as $row) {
@@ -100,7 +100,7 @@ include('template-Header.php');
           </div>
           <div class="mb-3">
             <label for="supplier" class="form-label">Supplier</label>
-            <select class="form-select" id="supplier" aria-label="Supplier" name="supplier">
+            <select class="form-select" aria-label="Supplier" name="supplier">
               <?php
               if ($supplier->getAllSupplier()->num_rows > 0) {
                 foreach ($supplier->getAllSupplier() as $row) {
@@ -119,11 +119,11 @@ include('template-Header.php');
           </div>
           <div class="mb-3">
             <label for="cost" class="form-label">Cost Price</label>
-            <input type="number" class="form-control" id="cost" name="cost" required>
+            <input type="number" class="form-control" name="cost" required>
           </div>
           <div class="mb-3">
             <label for="sale" class="form-label">Sale Price</label>
-            <input type="number" class="form-control" id="sale" name="sale" required>
+            <input type="number" class="form-control" name="sale" required>
           </div>
         </div>
         <div class="modal-footer">
